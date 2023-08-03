@@ -62,3 +62,7 @@ npm start
 
 The server will be accessible at `http://localhost:4000`.
 
+
+## Schema Explaination/ Routes Summary
+
+## Git clone seetup

@@ -12,6 +12,7 @@ mongooseConnect();
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/user');
+const adminRouter = require('./routes/admin')
 // const ecomRouter = require('./routes/eternity');
 
 var app = express();
@@ -29,7 +30,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-// app.use('/eternity', ecomRouter)
+app.use('/admin', adminRouter)
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

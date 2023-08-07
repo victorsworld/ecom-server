@@ -3,19 +3,20 @@ const { v4: uuid } = require('uuid');
 
 const userSchema = new mongoose.Schema({
   _id: { type: String, default: uuid },
+  role: { type: String, enum: ['user', 'admin'], default: 'user' },
   email: {
     type: String,
-		required: true,
-		lowercase: true,
-		trim: true,
-		unique: true,
+    required: true,
+    lowercase: true,
+    trim: true,
+    unique: true,
   },
   passwordHash: { type: String, required: true },
   // firstName: { type: String, required: true },
   // lastName: { type: String, required: true },
   // birthday: { type: Date, required: false },
   // billingAddress: { type: String, required: false },
-  // orderHistory:[], 
+  // orderHistory:[],
   // createdAt: { type: String, default: Date.now },
 });
 /*

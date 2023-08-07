@@ -3,7 +3,7 @@ const { v4: uuid } = require('uuid');
 
 const orderSchema = new mongoose.Schema({
   user: { type: String, ref: 'user' },
-  _id: { type: String, default: u },
+  _id: { type: String, default: uuid },
   status: {
     type: String,
     enum: ['ordered', 'completed', 'shipped', 'refund', 'replaced'],

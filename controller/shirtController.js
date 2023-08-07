@@ -49,18 +49,17 @@ const oneProduct = async (req, res) => {
 const allProduct = async (req, res) => {
   try {
     const allProduct = await Shirt.find({});
-    res
-      .status(200)
-      .json({
-        success: true,
-        message: 'All current product displayed.',
-        data: allProduct,
-      });
+    res.status(200).json({
+      success: true,
+      message: 'All current product displayed.',
+      data: allProduct,
+    });
   } catch (error) {
     console.log(error);
     res.status(500).json({ success: false, message: error.message });
   }
 };
+
 const editProduct = async (req, res) => {
   try {
     const { id } = req.params;
@@ -75,6 +74,7 @@ const editProduct = async (req, res) => {
     res.status(500).json({ success: false, message: 'error', error: error });
   }
 };
+
 const deleteProduct = async (req, res) => {
   try {
     const { id } = req.params;
@@ -86,7 +86,11 @@ const deleteProduct = async (req, res) => {
   }
 };
 
-//Im going to want to make a request to the user server to make a get request for on shirt and to take it out the inventory 'Get'
-// get shirt by id
 
-module.exports = { adminQuantity, oneProduct, allProduct, editProduct, deleteProduct };
+module.exports = {
+  adminQuantity,
+  oneProduct,
+  allProduct,
+  editProduct,
+  deleteProduct,
+};

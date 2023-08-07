@@ -55,11 +55,23 @@ const allProduct = async (req, res) =>{
     res.status(500).json({ success: false, message: error.message });
   }
 }
-// get all
-// edit
+const editProduct = async (req, res) =>{
+  try {
+    const { id } = req.params;
+    req.body.lastModified = Date.now()
+    if (req.body.completed) {
+      req.body.completedDate = Date.now();
+    }
+    const updateProduct = await Shirt.findOneAndUpdate({_id:id}, req.body,)
+    res.status(200).json({ success: true, data: updateProduct });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: 'error', error: error });
+  }
+}
 // delete
 
 //Im going to want to make a request to the user server to make a get request for on shirt and to take it out the inventory 'Get'
 // get shirt by id
 
-module.exports = { adminQuantity, oneProduct, allProduct };
+module.exports = { adminQuantity, oneProduct, allProduct, editProduct };

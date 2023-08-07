@@ -22,6 +22,8 @@ const shirtSchema = new mongoose.Schema({
     default: 0
   },
   Description: { type: String, required: false },
+  lastModified: { type: Date, default: Date.now },
+	createAt: { type: Date, default: Date.now },
 });
 
 const Shirt = mongoose.model('admin', shirtSchema);

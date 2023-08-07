@@ -48,11 +48,11 @@ const oneProduct = async (req, res) => {
 
 const allProduct = async (req, res) =>{
   try {
-    const user = res.locals.decodedToken.userId;
-    const allProduct = await Todo.find({ owner: user });
-    res.status(200).json({ success: true, data: allTodos });
+    const allProduct = await Shirt.find({});
+    res.status(200).json({ success: true, message: "All current product displayed.", data: allProduct });
   } catch (error) {
-    
+    console.log(error);
+    res.status(500).json({ success: false, message: error.message });
   }
 }
 // get all
@@ -62,4 +62,4 @@ const allProduct = async (req, res) =>{
 //Im going to want to make a request to the user server to make a get request for on shirt and to take it out the inventory 'Get'
 // get shirt by id
 
-module.exports = { adminQuantity, oneProduct };
+module.exports = { adminQuantity, oneProduct, allProduct };

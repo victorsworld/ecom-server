@@ -3,17 +3,28 @@ const { v4: uuid } = require('uuid');
 
 const shirtSchema = new mongoose.Schema({
   _id: { type: String, default: uuid },
-  size: {
-    type: String,
-    enum: ['small', 'medium', 'large'],
-    trim: true,
-    required: true,
+  name:{ type:String, default:'item'},
+  price:{type: Number, default: 20}, 
+  small: {
+    type: Number,
+    default: 0
   },
-  quantity: { type: Number, required: true },
+  medium: {
+    type: Number,
+    default: 0
+  },
+  large: {
+    type: Number,
+    default: 0
+  },
+  xlarge: {
+    type: Number,
+    default: 0
+  },
   Description: { type: String, required: false },
 });
 
-const Shirt = mongoose.model('shirt', shirtSchema);
+const Shirt = mongoose.model('admin', shirtSchema);
 
 module.exports = Shirt;
 

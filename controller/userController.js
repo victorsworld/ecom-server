@@ -21,8 +21,31 @@ const createUser = async (req, res) => {
   }
 };
 
+const loginUser = async (req, res) => {
+    try {
+      const { email, password } = req.body;
+  
+      const foundUser = await User.findOne({ email });
+      if (!foundUser) {res.status(401).json({success: false,message: 'User or Password not does not match up',});
+      }
+  
+      const isPasswordValid = await bcrypt.compare(password,foundUser.hashPassword );
+      if (!isPasswordValid) { res.status(401).json({success: false,message: 'User or Password not does not match up',});
+      }
+  
+      const token = jwt.sign({ userId: foundUser._id }, process.env.SECRET_KEY, {expiresIn: '1hr',
+      });
+  
+      res.status(200).json({ success: true, token: token });
+  
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ success: false, message: 'error', error: error });
+    }
+  };
 
 
 module.exports = {
-    createUser, 
+    createUser,
+    loginUser,
   };

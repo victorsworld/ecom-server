@@ -29,8 +29,9 @@ const loginUser = async (req, res) => {
       if (!foundUser) {res.status(401).json({success: false,message: 'User or Password not does not match up',});
       }
   
-      const isPasswordValid = await bcrypt.compare(password,foundUser.hashPassword );
-      if (!isPasswordValid) { res.status(401).json({success: false,message: 'User or Password not does not match up',});
+      const isPasswordValid = await bcrypt.compare(password,foundUser.passwordHash );
+      console.log(isPasswordValid)
+      if (!isPasswordValid) { res.status(401).json({success: false, message: 'User or Password not does not match up',});
       }
   
       const token = jwt.sign({ userId: foundUser._id }, process.env.SECRET_KEY, {expiresIn: '1hr',
@@ -39,7 +40,7 @@ const loginUser = async (req, res) => {
       res.status(200).json({ success: true, token: token });
   
     } catch (error) {
-      console.log(error);
+      console.log(error.message);
       res.status(500).json({ success: false, message: 'error', error: error });
     }
   };

@@ -12,7 +12,7 @@ router.post('/register', createUser);
 
 router.post('/login', loginUser);
 
-router.get('/product', oneProduct);
+router.get('/product/:id', oneProduct);
 
 router.get('/all-product', allProduct);
 

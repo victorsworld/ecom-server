@@ -4,7 +4,9 @@ const { v4: uuid } = require('uuid');
 const shirtSchema = new mongoose.Schema({
   _id: { type: String, default: uuid },
   name:{ type:String, default:'item'},
-  price:{type: Number, default: 20}, 
+  price:{type: Number, default: 20},
+  img:{type: String, required: false},
+  color: {type: String, enum:['black','berry', 'watermelon', 'ice blue', 'grey']},
   small: {
     type: Number,
     default: 0

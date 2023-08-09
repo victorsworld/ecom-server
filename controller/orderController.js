@@ -1,4 +1,6 @@
 const Order = require('../model/Order');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 const createUserOrder = async (req, res) => {
   try {
@@ -18,7 +20,6 @@ const createUserOrder = async (req, res) => {
   }
 };
 
-
 const usersOrderHistory = async (req, res) => {
     try {
       const { _id } = req.body;
@@ -33,7 +34,6 @@ const usersOrderHistory = async (req, res) => {
 
 
 //'user' get all user's order history
-// post order history is created when order is completed
 //'admin' get all order history
 //'admin' get order history by users email
 

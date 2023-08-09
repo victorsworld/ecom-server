@@ -4,10 +4,6 @@ const {adminQuantity, oneProduct, allProduct, editProduct, deleteProduct } = req
 
 router.post('/inventory', adminQuantity)
 
-router.get('/product', oneProduct)
-
-router.get('/all-product', allProduct)
-
 router.put('/edit-product/:id', editProduct)
 
 router.delete('/delete-product/:id', deleteProduct)

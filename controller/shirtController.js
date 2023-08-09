@@ -3,14 +3,14 @@ const User = require('../model/User');
 
 const adminQuantity = async (req, res) => {
   try {
-    const { price, name, small, medium, large, xlarge, description } = req.body;
+    const { price, name, small, medium, large, xlarge, description, color } = req.body;
 
-    const existingShirt = await Shirt.findOne({ name });
+    const existingColor = await Shirt.findOne({ color });
 
-    if (existingShirt) {
+    if (existingColor) {
       return res.status(400).json({
         success: false,
-        message: 'Product with this name already exists',
+        message: 'Product with this color already exists',
       });
     }
 
@@ -22,6 +22,7 @@ const adminQuantity = async (req, res) => {
       large,
       xlarge,
       description,
+      color
     };
     const newShirt = await new Shirt(inventoryInfo);
     const savedInventory = await newShirt.save();
@@ -34,8 +35,8 @@ const adminQuantity = async (req, res) => {
 
 const oneProduct = async (req, res) => {
   try {
-    const { _id, name } = req.body;
-    const foundProduct = await Shirt.findOne({ name });
+    const { id } = req.params;
+    const foundProduct = await Shirt.findOne({ _id: id });
     if (!foundProduct) {
       res.status(401).json({ success: false, message: 'Product not found' });
     }

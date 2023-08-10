@@ -3,10 +3,8 @@ const router = express.Router();
 
 const { createUser, loginUser } = require('../controller/userController');
 const { oneProduct, allProduct } = require('../controller/shirtController');
-const {
-  usersOrderHistory,
-  createUserOrder,
-} = require('../controller/orderController');
+const {usersOrderHistory,createUserOrder,} = require('../controller/orderController');
+
 
 router.post('/register', createUser);
 
@@ -18,8 +16,6 @@ router.get('/all-product', allProduct);
 
 router.post('/order', createUserOrder);
 
-router.get('/order-history', usersOrderHistory)
-
-router;
+router.get('/order-history', usersOrderHistory);
 
 module.exports = router;

@@ -1,34 +1,43 @@
 const mongoose = require('mongoose');
+const { v4: uuid } = require('uuid');
 
 const cartSchema = new mongoose.Schema({
-  userId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User', // Reference to the User model
-    required: true
-  },
-  color: {
+  _id: {
     type: String,
-    required: true
+    default: uuid,
   },
-  size: {
-    type: String,
-    required: true
-  },
-  // You can add other fields like quantity, price, etc. here
-  // For example:
-  quantity: {
-    type: Number,
-    default: 1
-  },
-  price: {
-    type: Number,
-    required: true
-  },
+  owner: { type: String, ref: 'user', required: true },
+  product: [
+    {
+      _id: { type: String, ref: ' Shirt ' },
+      color: {
+        type: String,
+      },
+      size: {
+        type: String,
+      },
+      quantity: {
+        type: Number,
+        default: 1,
+      },
+      price: {
+        type: Number,
+      },
+    },
+  ],
+  subTotal: { type: Number },
   createdAt: {
     type: Date,
-    default: Date.now
-  }
+    default: Date.now,
+  },
 });
+
+/* 
+Item is posted to the cart, 
+put edit item while in cart,
+or delete item in the cart,
+order is completed it will delete product in the cart and zero it out. 
+*/
 
 const Cart = mongoose.model('Cart', cartSchema);
 

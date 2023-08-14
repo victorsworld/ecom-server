@@ -11,7 +11,9 @@ const userSchema = new mongoose.Schema({
     trim: true,
     unique: true,
   },
-  passwordHash: { type: String, required: true }
+  cart: [{type: String, ref: "cart"}],
+  passwordHash: { type: String, required: true },
+  createdAt: { type: String, default: Date.now }
 });
 
 const User = mongoose.model('user', userSchema);

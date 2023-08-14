@@ -1,14 +1,19 @@
 const express = require('express');
 const router = express.Router();
 
-const { createUser, loginUser } = require('../controller/userController');
+const { createUser, loginUser, validateUser } = require('../controller/userController');
 const { oneProduct, allProduct } = require('../controller/shirtController');
 const {usersOrderHistory,createUserOrder,} = require('../controller/orderController');
 
+const {  jwtValidate } = require('../utils/jwtValidate');
+const { validateUserData } = require('../utils/validateUserData')
+const { checkIfEmpty } = require('../utils/checkIfEmpty')
 
-router.post('/register', createUser);
+router.post('/register', checkIfEmpty, validateUserData, createUser );
 
-router.post('/login', loginUser);
+router.post('/login',checkIfEmpty, validateUserData, loginUser);
+
+router.get('/validate',jwtValidate, validateUser)
 
 router.get('/product/:id', oneProduct);
 

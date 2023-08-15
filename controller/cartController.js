@@ -8,8 +8,18 @@ const fillCart = async (req, res) => {
       const user= res.locals.decodedToken.userId;
       const { color, size } = req.body; 
 
-      const cart = await Cart.findOne({ owner: user });
-  
+      let cart = await Cart.findOne({ owner: user });
+      const shirt = await Shirt.findOne({ color });
+
+      const productDetails = {
+        shirtId: shirt._id,
+        color,
+        size,
+        price: shirt.price,
+        quantity: 1
+      };
+      
+    
       if (!cart) {
         const newCart = new Cart({
           owner: user,
@@ -17,33 +27,50 @@ const fillCart = async (req, res) => {
           subTotal: 0
         });
         const saveCart = await newCart.save();
-        return res.status(200).json({ success: true, data: saveCart });
+        cart = await Cart.findOne({owner: user})
+        // return res.status(200).json({ success: true, data: saveCart });
       }
 
-      const shirt = await Shirt.findOne({ color });
       if (!shirt) {
         return res.status(400).json({ success: false, message: 'Shirt not found' });
       }
-      const productDetails = {
-        _id: shirt._id,
-        color,
-        size,
-        price: shirt.price,
-        quantity: 1
-      };
       const newSubTotal = cart.subTotal + shirt.price;
-  
       await Cart.findOneAndUpdate(
         { owner: user },
         { $push: { product: productDetails, }, subTotal: newSubTotal  }
       );
   
-      res.status(200).json({ success: true, message: 'Product added to cart ' });
+      res.status(200).json({ success: true, message: 'Product added to cart' });
     } catch (error) {
       console.error(error.message);
       res.status(500).json({ success: false, message: 'Error', error: error });
     }
   };
+  const getCart = async(req, res) =>{
+    try {
+        const user= res.locals.decodedToken.userId;
+        const findCart = await Cart.findOne({owner: user})
+        if(!findCart){
+           return res.status(500).json({success: false, message: 'Cart is empty.'})
+        }
+        return res.status(200).json({success: true, data: findCart})
+      
+    } catch (error) {
+        console.log(error.message)
+        res.status(500).song({success:false, message: 'Error', error: error})
+    }
+  }
+
+  const editCart = async (req, res) => {
+    try {
+        const user= res.locals.decodedToken.userId;
+        const { _id, color, size, quantity } = req.body;
+        const cart = await Cart.findOne({ owner: user });
+        const updateCart = await Cart.findOneAndUpdate({ _id: id }, req.body);
+    } catch (error) {
+        
+    }
+  }
 /* 
 
 put edit item while in cart,
@@ -56,4 +83,4 @@ order is completed it will delete product in the cart and zero it out.
 //     { $push: { todos: newTodo._id } }
 //   );
 
-module.exports = { fillCart };
+module.exports = { fillCart, getCart };

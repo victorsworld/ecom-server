@@ -9,7 +9,8 @@ const cartSchema = new mongoose.Schema({
   owner: { type: String, ref: 'user', required: true },
   product: [
     {
-      _id: { type: String, ref: ' Shirt ' },
+        shirtId: {type: String, ref: 'shirt'},
+      _id: { type: String, default: uuid},
       color: {
         type: String,
       },

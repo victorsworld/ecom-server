@@ -64,23 +64,14 @@ const fillCart = async (req, res) => {
   const editCart = async (req, res) => {
     try {
         const user= res.locals.decodedToken.userId;
-        const { _id, color, size, quantity } = req.body;
+        const { _id, color, size, quantity, price, subTotal } = req.body;
+        // when price is added or subtracted subtotal will update
         const cart = await Cart.findOne({ owner: user });
         const updateCart = await Cart.findOneAndUpdate({ _id: id }, req.body);
     } catch (error) {
-        
+        console.log(error.message)
+        return res.status(500).song({success:false, message: 'Error', error: error})
     }
   }
-/* 
 
-put edit item while in cart,
-or delete item in the cart,
-order is completed it will delete product in the cart and zero it out. 
-*/
-
-// const updateUser = await User.findOneAndUpdate(
-//     { _id: user },
-//     { $push: { todos: newTodo._id } }
-//   );
-
-module.exports = { fillCart, getCart };
+module.exports = { fillCart, getCart, editCart };

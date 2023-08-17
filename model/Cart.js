@@ -26,7 +26,6 @@ const cartSchema = new mongoose.Schema({
       },
     },
   ],
-  subTotal: { type: Number },
   createdAt: {
     type: Date,
     default: Date.now,

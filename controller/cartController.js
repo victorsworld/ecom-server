@@ -57,21 +57,36 @@ const fillCart = async (req, res) => {
       
     } catch (error) {
         console.log(error.message)
-        res.status(500).song({success:false, message: 'Error', error: error})
+        res.status(500).json({success:false, message: 'Error', error: error})
     }
   }
 
   const editCart = async (req, res) => {
     try {
         const user= res.locals.decodedToken.userId;
-        const { _id, color, size, quantity, price, subTotal } = req.body;
-        // when price is added or subtracted subtotal will update
-        const cart = await Cart.findOne({ owner: user });
-        const updateCart = await Cart.findOneAndUpdate({ _id: id }, req.body);
+        const { id } = req.params;
+        const updateCart = await Cart.findOneAndUpdate({ owner: user, "product.shirtId": id }, {$set: {'product.$.size': req.body.size, 'product.$.quantity': req.body.quantity, 'product.$.price': req.body.price}});
+        return res.status(200).json({success: true, data: updateCart})
     } catch (error) {
         console.log(error.message)
-        return res.status(500).song({success:false, message: 'Error', error: error})
+        return res.status(500).json({success:false, message: 'Error', error: error})
     }
   }
+  const deleteCart = async (req, res) => {
+    try {
+      const user = res.locals.decodedToken.userId;
+  
+      const deletedCart = await Cart.findOneAndDelete({ owner: user });
+  
+      if (!deletedCart) {
+        return res.status(404).json({ success: false, message: 'Cart not found' });
+      }
+  
+      res.status(200).json({ success: true, message: 'Cart deleted successfully' });
+    } catch (error) {
+      console.log(error.message);
+      res.status(500).json({ success: false, message: 'Error', error: error });
+    }
+  };
 
 module.exports = { fillCart, getCart, editCart };

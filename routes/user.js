@@ -19,8 +19,4 @@ router.get('/product/:id', oneProduct);
 
 router.get('/all-product', allProduct);
 
-router.post('/order', createUserOrder);
-
-router.get('/order-history', usersOrderHistory);
-
 module.exports = router;

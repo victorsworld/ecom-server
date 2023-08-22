@@ -1,14 +1,18 @@
 const Order = require('../model/Order');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
 
 const createUserOrder = async (req, res) => {
   try {
-    const { user, status, shippingAddress, item, tran_amount } = req.body;
+    const user = res.locals.decodedToken.userId;
+
+    const { status, shippingaddress, item, tran_amount, firstname, lastname, billingaddress } = req.body;
+
     const newOrder = new Order({
-      user,
+      owner: user,
       status,
-      shippingAddress,
+      firstname,
+      lastname,
+      billingaddress,
+      shippingaddress,
       item,
       tran_amount,
     });
@@ -16,39 +20,40 @@ const createUserOrder = async (req, res) => {
     res.status(201).json({ success: true, data: savedOrder });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ success: false, message: 'Error creating the order', error: error.message });
+    res
+      .status(500)
+      .json({
+        success: false,
+        message: 'Error creating the order',
+        error: error.message,
+      });
   }
 };
 
-const usersOrderHistory = async (req, res) => {
-    try {
-      const { _id } = req.body;
-      const userOrders = await Order.find({});
-      res.status(200).json({ success: true, data: userOrders });
-    } catch (error) {
-      console.log(error);
-      res.status(500).json({ success: false, message: 'Error fetching order history', error: error.message });
+const orderHistory = async (req, res) => {
+  try {
+    const user = res.locals.decodedToken.userId
+    const userOrders = await Order.find({owner: user});
+    if (!userOrders) {
+      return res
+        .status(500)
+        .json({ success: false, message: `User's order history is empty` });
     }
-  };
-  
+    res.status(200).json({ success: true, data: userOrders });
+  } catch (error) {
+    console.log(error);
+    res
+      .status(500)
+      .json({
+        success: false,
+        message: 'Error fetching order history',
+        error: error.message,
+      });
+  }
+};
 
-
-//'user' get all user's order history
 //'admin' get all order history
 //'admin' get order history by users email
+// get order history by date ordered or quanitity
 
-// const orderSchema = new mongoose.Schema({
-//     user: { type: String, ref: 'user' },
-//     _id: { type: String, default: u },
-//     status: {
-//       type: String,
-//       enum: ['ordered', 'completed', 'shipped', 'refund', 'replaced'],
-//       default: 'ordered',
-//     },
-//     data: { type: String, default: Date.now },
-//     shippingAddress: { type: String },
-//     item: { type: String },
-//     tran_amount: { type: Number },
-//   });
-
-module.exports = {createUserOrder, usersOrderHistory};
+module.exports = { createUserOrder, orderHistory };

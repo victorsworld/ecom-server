@@ -2,23 +2,35 @@ const mongoose = require('mongoose');
 const { v4: uuid } = require('uuid');
 
 const orderSchema = new mongoose.Schema({
-  user: { type: String, ref: 'user' },
+  owner: { type: String, ref: 'user' },
   _id: { type: String, default: uuid },
-  email: {
-    type: String,
-    required: true,
-    lowercase: true,
-    trim: true,
-    unique: true,
-  },
   status: {
     type: String,
     enum: ['ordered', 'completed', 'shipped', 'refund', 'replaced'],
     default: 'ordered',
   },
-  data: { type: String, default: Date.now },
-  shippingAddress: { type: String },
-  item: { type: String },
+  date: { type: String, default: new Date().toLocaleDateString() },
+  firstname:{ type: String, required: true },
+  lastname:{ type: String, required: true },
+  shippingaddress: { type: String, required: true },
+  billingaddress:{ type: String, required: true },
+  item: [
+    {
+      product: {
+        shirt: {type: String, ref: 'shirt'},
+        _id: { type: String },
+        size: {
+          type: String,
+        },
+        quantity: {
+          type: Number,
+        },
+        price: {
+          type: Number,
+        },
+      },
+    },
+  ],
   tran_amount: { type: Number },
 });
 

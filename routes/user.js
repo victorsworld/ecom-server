@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const { createUser, loginUser, validateUser } = require('../controller/userController');
-const { oneProduct, allProduct } = require('../controller/shirtController');
+const { oneProduct, allProduct, editFinalProduct } = require('../controller/shirtController');
 const {usersOrderHistory,createUserOrder,} = require('../controller/orderController');
 
 const {  jwtValidate } = require('../utils/jwtValidate');
@@ -18,5 +18,7 @@ router.get('/validate',jwtValidate, validateUser)
 router.get('/product/:id', oneProduct);
 
 router.get('/all-product', allProduct);
+
+
 
 module.exports = router;

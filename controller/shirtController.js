@@ -87,6 +87,32 @@ const deleteProduct = async (req, res) => {
   }
 };
 
+// const editFinalProduct = async (req, res) => {
+//   try {
+//     const { id } = req.params;
+//     const { size, color, quantity } = req.body;
+
+//     const updateObject = {
+//       [`variants.${size}`]: quantity
+//     };
+
+//     // Update the quantity of the specified size and color for the shirt item
+//     const updateProduct = await Shirt.findOneAndUpdate(
+//       { _id: id, color: color },
+//       { $set: updateObject }
+//     );
+
+//     if (!updateProduct) {
+//       return res.status(404).json({ success: false, message: 'Product not found' });
+//     }
+
+//     res.status(200).json({ success: true, data: updateProduct });
+//   } catch (error) {
+//     console.log(error);
+//     res.status(500).json({ success: false, message: 'Error', error: error });
+//   }
+// };
+
 
 module.exports = {
   adminQuantity,
